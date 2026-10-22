@@ -47,14 +47,15 @@ def purchasePlaces():
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
     
-    # CORRECTION BRANCHE 4 UNIQUEMENT
-    available_places = int(competition['numberOfPlaces'])
-    if placesRequired > available_places:
-        flash("Il n'y a pas assez de places disponibles pour cette compétition.")
+    # (Les autres vérifications déjà présentes)
+    
+    # AJOUT BRANCHE 6 : Limite de 12 places
+    if placesRequired > 12:
+        flash("Vous ne pouvez pas réserver plus de 12 places par compétition.")
         return redirect(url_for('book', competition=competition['name'], club=club['name'])), 400
 
-    # Le reste
-    competition['numberOfPlaces'] = available_places - placesRequired
+    # Le reste...
+    competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - placesRequired
     flash('Great-booking complete!')
     return render_template('welcome.html', club=club, competitions=competitions)
 
