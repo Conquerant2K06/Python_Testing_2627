@@ -41,12 +41,20 @@ def book(competition,club):
         return render_template('welcome.html', club=club, competitions=competitions)
 
 
-@app.route('/purchasePlaces',methods=['POST'])
+@app.route('/purchasePlaces', methods=['POST'])
 def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
-    competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
+    
+    # CORRECTION BRANCHE 4 UNIQUEMENT
+    available_places = int(competition['numberOfPlaces'])
+    if placesRequired > available_places:
+        flash("Il n'y a pas assez de places disponibles pour cette compétition.")
+        return redirect(url_for('book', competition=competition['name'], club=club['name'])), 400
+
+    # Le reste
+    competition['numberOfPlaces'] = available_places - placesRequired
     flash('Great-booking complete!')
     return render_template('welcome.html', club=club, competitions=competitions)
 
