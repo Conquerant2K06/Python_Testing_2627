@@ -31,14 +31,15 @@ def showSummary():
 
 
 @app.route('/book/<competition>/<club>')
-def book(competition,club):
-    foundClub = [c for c in clubs if c['name'] == club][0]
-    foundCompetition = [c for c in competitions if c['name'] == competition][0]
-    if foundClub and foundCompetition:
-        return render_template('booking.html',club=foundClub,competition=foundCompetition)
+def book(competition, club):
+    found_clubs = [c for c in clubs if c['name'] == club]
+    found_competitions = [c for c in competitions if c['name'] == competition]
+    
+    if found_clubs and found_competitions:
+        return render_template('booking.html', club=found_clubs[0], competition=found_competitions[0])
     else:
-        flash("Something went wrong-please try again")
-        return render_template('welcome.html', club=club, competitions=competitions)
+        flash("Something went wrong - please try again")
+        return redirect(url_for('index'))
 
 
 @app.route('/purchasePlaces',methods=['POST'])
@@ -57,3 +58,6 @@ def purchasePlaces():
 @app.route('/logout')
 def logout():
     return redirect(url_for('index'))
+
+if __name__ == "__main__":
+    app.run(debug=True)    
