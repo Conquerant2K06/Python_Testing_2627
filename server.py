@@ -41,14 +41,38 @@ def book(competition,club):
         return render_template('welcome.html', club=club, competitions=competitions)
 
 
-@app.route('/purchasePlaces',methods=['POST'])
+@app.route('/purchasePlaces', methods=['POST'])
 def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
-    competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
-    # AJOUT BRANCHE 7 : Mise à jour des points du club
-    club['points'] = int(club['points']) - placesRequired 
+    
+    # Branche 3 : Nombres négatifs
+    if placesRequired <= 0:
+        flash("Le nombre de places doit être supérieur à zéro.")
+        return redirect(url_for('book', competition=competition['name'], club=club['name'])), 400
+
+    # Branche 4 : Places disponibles
+    available_places = int(competition['numberOfPlaces'])
+    if placesRequired > available_places:
+        flash("Il n'y a pas assez de places disponibles pour cette compétition.")
+        return redirect(url_for('book', competition=competition['name'], club=club['name'])), 400
+
+    # Branche 5 : Points du club
+    club_points = int(club['points'])
+    if placesRequired > club_points:
+        flash("Vous n'avez pas assez de points pour réserver autant de places.")
+        return redirect(url_for('book', competition=competition['name'], club=club['name'])), 400
+
+    # Branche 6 : Limite de 12 places
+    if placesRequired > 12:
+        flash("Vous ne pouvez pas réserver plus de 12 places par compétition.")
+        return redirect(url_for('book', competition=competition['name'], club=club['name'])), 400
+
+    # Mise à jour des places et des points (Branche 7)
+    competition['numberOfPlaces'] = available_places - placesRequired
+    club['points'] = club_points - placesRequired
+    
     flash('Great-booking complete!')
     return render_template('welcome.html', club=club, competitions=competitions)
 
