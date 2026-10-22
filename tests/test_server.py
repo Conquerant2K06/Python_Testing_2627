@@ -91,3 +91,10 @@ def test_purchase_places_should_update_club_points(client):
     assert response.status_code == 200
     # On vérifie que "11" (13 - 2) apparaît dans la page de résumé
     assert b"11" in response.data    
+
+def test_points_board_page_should_display_all_clubs(client):
+    """Teste que la page des points affiche bien la liste des clubs"""
+    response = client.get('/points')
+    assert response.status_code == 200
+    assert b"Simply Lift" in response.data
+    assert b"Iron Temple" in response.data
