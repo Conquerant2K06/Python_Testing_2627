@@ -4,29 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GUDLFT Registration</title>
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Welcome to the GUDLFT Registration Portal!</h1>
-    Please enter your secretary email to continue:
-        <h1>Welcome to the GUDLFT Registration Portal!</h1>
+    <div class="container">
+        <h1>Welcome to GUDLFT</h1>
 
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul class="flash-messages">
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="flash-messages">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
 
-    <p>Please enter your secretary email to continue:</p>
-    <form action="showSummary" method="post">
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" required>
-        <button type="submit">Enter</button>
-    </form>
+        <form action="{{ url_for('showSummary') }}" method="post">
+            <div class="form-group">
+                <label for="email">Secretary Email</label>
+                <input type="email" name="email" id="email" placeholder="john@simplylift.co" required>
+            </div>
+            <button type="submit">Enter</button>
+        </form>
+    </div>
 </body>
 </html>

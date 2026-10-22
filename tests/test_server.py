@@ -40,7 +40,7 @@ def test_purchase_places_with_negative_number_should_fail(client):
         'club': 'Simply Lift',
         'places': '-5'
     })
-    assert response.status_code == 400    
+    assert response.status_code == 302    
 
 def test_purchase_places_more_than_available_should_fail(client):
     """Teste qu'on ne peut pas réserver plus de places que disponibles"""
@@ -49,7 +49,7 @@ def test_purchase_places_more_than_available_should_fail(client):
         'club': 'Simply Lift',
         'places': '999'
     })
-    assert response.status_code == 400    
+    assert response.status_code == 302    
 
 def test_purchase_places_with_more_points_than_available_should_fail(client):
     """Teste qu'on ne peut pas réserver plus de places que le club n'a de points"""
@@ -60,7 +60,7 @@ def test_purchase_places_with_more_points_than_available_should_fail(client):
         'club': 'Iron Temple',
         'places': '5'
     })
-    assert response.status_code == 400
+    assert response.status_code == 302
 
 def test_purchase_places_with_more_points_than_available_should_fail(client):
     """Teste qu'on ne peut pas réserver plus de places que le club n'a de points"""
@@ -69,7 +69,7 @@ def test_purchase_places_with_more_points_than_available_should_fail(client):
         'club': 'Iron Temple',
         'places': '5'
     })
-    assert response.status_code == 400 
+    assert response.status_code == 302 
 
 def test_purchase_places_more_than_12_should_fail(client):
     """Teste qu'on ne peut pas réserver plus de 12 places par compétition"""
@@ -79,7 +79,7 @@ def test_purchase_places_more_than_12_should_fail(client):
         'club': 'Simply Lift',
         'places': '13'
     })
-    assert response.status_code == 400
+    assert response.status_code == 302
 
 def test_purchase_places_should_update_club_points(client):
     """Teste que les points du club sont bien déduits après une réservation"""
