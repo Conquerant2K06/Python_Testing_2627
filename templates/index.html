@@ -1,14 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GUDLFT Registration</title>
+    <title>GUDLFT - Connexion</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to GUDLFT</h1>
+    <div class="container" style="max-width: 500px; margin-top: 5vh;">
+        <h1>Bienvenue sur GUDLFT</h1>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">
+            Entrez votre email de secrétaire pour accéder à votre espace.
+        </p>
 
         {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -20,13 +23,19 @@
             {% endif %}
         {% endwith %}
 
-        <form action="{{ url_for('showSummary') }}" method="post">
+        <form action="{{ url_for('show_summary') }}" method="post">
             <div class="form-group">
-                <label for="email">Secretary Email</label>
-                <input type="email" name="email" id="email" placeholder="john@simplylift.co" required>
+                <label for="email">Adresse email</label>
+                <input type="email" name="email" id="email" placeholder="ex: john@simplylift.co" required>
             </div>
-            <button type="submit">Enter</button>
+            <button type="submit">Se connecter</button>
         </form>
+        
+        <div class="text-center" style="margin-top: 2rem;">
+            <a href="{{ url_for('show_points') }}" style="color: var(--primary); text-decoration: none; font-weight: 500;">
+                Voir le tableau des points (Public)
+            </a>
+        </div>
     </div>
 </body>
 </html>

@@ -1,34 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Points Board | GUDLFT</title>
+    <title>Classement des Clubs</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>Club Points Board</h1>
-        
+    <div class="container" style="max-width: 700px;">
+        <h1 style="margin-bottom: 0.5rem;">Tableau des Points</h1>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">
+            Classement public de tous les clubs.
+        </p>
+
         <table>
             <thead>
                 <tr>
-                    <th>Club Name</th>
-                    <th>Points</th>
+                    <th>Club</th>
+                    <th style="text-align: right;">Points</th>
                 </tr>
             </thead>
             <tbody>
                 {% for club in clubs %}
                 <tr>
                     <td><strong>{{ club['name'] }}</strong></td>
-                    <td><span class="badge">{{ club['points'] }}</span></td>
+                    <td style="text-align: right;"><span class="badge">{{ club['points'] }}</span></td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
         
-        <div style="text-align: center; margin-top: 2rem;">
-            <a href="{{ url_for('index') }}">← Back to home</a>
+        <div class="text-center">
+            <a href="{{ url_for('index') }}" class="btn btn-outline">Retour à l'accueil</a>
         </div>
     </div>
 </body>

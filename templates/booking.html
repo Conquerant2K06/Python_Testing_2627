@@ -1,14 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking for {{ competition['name'] }} | GUDLFT</title>
+    <title>Réserver - {{ competition['name'] }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h2>Booking for {{ competition['name'] }}</h2>
+    <div class="container" style="max-width: 600px;">
+        <h2 style="text-align: center; margin-bottom: 0.5rem;">{{ competition['name'] }}</h2>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">
+            Places disponibles: <strong>{{ competition['numberOfPlaces'] }}</strong>
+        </p>
 
         {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -20,22 +23,20 @@
             {% endif %}
         {% endwith %}
 
-        <p><strong>Places available:</strong> {{ competition['numberOfPlaces'] }}</p>
-
-        <form action="{{ url_for('purchasePlaces') }}" method="post">
+        <form action="{{ url_for('purchase_places') }}" method="post">
             <input type="hidden" name="club" value="{{ club['name'] }}">
             <input type="hidden" name="competition" value="{{ competition['name'] }}">
 
             <div class="form-group">
-                <label for="places">How many places?</label>
-                <input type="number" name="places" id="places" min="1" required placeholder="e.g. 5">
+                <label for="places">Combien de places souhaitez-vous réserver ?</label>
+                <input type="number" name="places" id="places" min="1" max="12" required placeholder="Max 12 places">
             </div>
-            <button type="submit">Book</button>
+            <button type="submit">Confirmer la réservation</button>
         </form>
 
-                <div style="text-align: center; margin-top: 2rem;">
-            <!-- On utilise l'historique du navigateur pour revenir en arrière -->
-            <a href="javascript:history.back()" style="color: #6B7280; font-weight: 400; text-decoration: none;">← Retour</a>
+        <div class="text-center">
+            <a href="javascript:history.back()" style="color: var(--text-muted); text-decoration: none;">← Retour</a>
         </div>
+    </div>
 </body>
 </html>

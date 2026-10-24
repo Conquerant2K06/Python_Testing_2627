@@ -1,16 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Summary | GUDLFT</title>
+    <title>GUDLFT - Tableau de bord</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
         <div class="header-bar">
-            <h2>Welcome, {{ club['email'] }}</h2>
-            <a href="{{ url_for('logout') }}">Logout</a>
+            <div class="user-info">
+                <span>Connecté en tant que</span>
+                <strong>{{ club['email'] }}</strong>
+            </div>
+            <div>
+                <a href="{{ url_for('show_points') }}" class="btn btn-outline" style="margin-right: 1rem;">Points</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-outline">Déconnexion</a>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h2>Compétitions à venir</h2>
+            <div>
+                <span style="color: var(--text-muted); margin-right: 0.5rem;">Vos points:</span>
+                <span class="badge points">{{ club['points'] }}</span>
+            </div>
         </div>
 
         {% with messages = get_flashed_messages() %}
@@ -23,23 +37,25 @@
             {% endif %}
         {% endwith %}
 
-        <p><strong>Points available:</strong> <span class="badge">{{ club['points'] }}</span></p>
-
-        <h3 style="margin-top: 2rem;">Available Competitions:</h3>
-        
-        {% for comp in competitions %}
-            <div class="competition-card">
-                <strong>{{ comp['name'] }}</strong>
-                <p>Date: {{ comp['date'] }}</p>
-                <p>Places: {{ comp['numberOfPlaces'] }}</p>
-                
-                {% if comp['date'] > today and comp['numberOfPlaces']|int > 0 %}
-                    <a href="{{ url_for('book', competition=comp['name'], club=club['name']) }}" style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: var(--primary-color); color: white; border-radius: 6px;">Book Places</a>
-                {% elif comp['date'] <= today %}
-                    <span class="badge danger">Compétition terminée</span>
-                {% endif %}
-            </div>
-        {% endfor %}
+        <div class="competitions-grid">
+            {% for comp in competitions %}
+                <div class="competition-card">
+                    <div class="competition-title">{{ comp['name'] }}</div>
+                    <div class="competition-detail">📅 {{ comp['date'] }}</div>
+                    <div class="competition-detail" style="margin-bottom: 1.5rem;">📍 Places: {{ comp['numberOfPlaces'] }}</div>
+                    
+                    {% if comp['date'] > today and comp['numberOfPlaces']|int > 0 %}
+                        <a href="{{ url_for('book', competition=comp['name'], club=club['name']) }}" class="btn">
+                            Réserver
+                        </a>
+                    {% elif comp['date'] <= today %}
+                        <span class="badge danger" style="text-align: center;">Terminée</span>
+                    {% else %}
+                        <span class="badge danger" style="text-align: center;">Complet</span>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
     </div>
 </body>
 </html>
